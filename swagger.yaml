@@ -1,0 +1,102 @@
+swagger: "2.0"
+info:
+  description: "API Viasoft - NFE services status"
+  version: "1.0.0"
+  title: "API Viasoft"
+host: "localhost:8088"
+schemes:
+  - "http"
+paths:
+  "/status/services":
+    get:
+      tags:
+        - "Services"
+      produces:
+        - "application/json"
+      parameters:
+        - in: query
+          name: date
+          description: "Filter by date"
+          type: string
+          required: false
+      description: "Search by current status or with filter by date."
+      responses:
+        200:
+          $ref: "#/responses/NfeServicesStatusArray"
+        204:
+          $ref: "#/responses/NoBody"
+  "/status/services/{state}":
+    get:
+      tags:
+        - "Services"
+      produces:
+        - "application/json"
+      parameters:
+        - in: path
+          name: state
+          type: string
+          required: true
+      description: "Search by current status by state."
+      responses:
+        200:
+          $ref: "#/responses/NfeServicesStatus"
+        204:
+          $ref: "#/responses/NoBody"
+  "/states/services/unavailability":
+    get:
+      tags:
+        - "Services"
+      produces:
+        - "application/json"
+      description: "Search state with greater instability"
+      responses:
+        200:
+          $ref: "#/responses/Unavailability"
+        204:
+          $ref: "#/responses/NoBody"
+
+definitions:
+  NfeServicesStatus:
+    type: object
+    properties:
+      id:
+        type: string
+      state:
+        type: string
+      authorization:
+        type: string
+      returnAuthorization:
+        type: string
+      disable:
+        type: string
+      protocolConsultation:
+        type: string
+      statusService:
+        type: string
+      averageTime:
+        type: string
+      queryRegister:
+        type: string
+      receptionEvent:
+        type: string
+      creationDate:
+        type: string
+
+responses:
+  NoBody:
+    description: Ok no body
+  NfeServicesStatusArray:
+    description: Returns list status.
+    schema:
+      type: array
+      items:
+        $ref: "#/definitions/NfeServicesStatus"
+  NfeServicesStatus:
+    description: Return status by states.
+    schema:
+      $ref: "#/definitions/NfeServicesStatus"
+  Unavailability:
+    description: Return state with greater instability
+    schema:
+      type: string
+      example: MS
